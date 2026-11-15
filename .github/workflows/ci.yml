@@ -22,3 +22,19 @@ jobs:
 
       - name: Запуск тестов
         run: ctest --test-dir build -C Release --output-on-failure
+
+      - name: Сохранение программы для Windows
+        if: runner.os == 'Windows'
+        uses: actions/upload-artifact@v7
+        with:
+          name: ip-filter-Windows
+          path: build/Release/ip_filter.exe
+          if-no-files-found: error
+
+      - name: Сохранение программы для Linux
+        if: runner.os == 'Linux'
+        uses: actions/upload-artifact@v7
+        with:
+          name: ip-filter-Linux
+          path: build/ip_filter
+          if-no-files-found: error
