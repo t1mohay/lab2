@@ -1,0 +1,24 @@
+name: Сборка и тесты
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Получение исходников
+        uses: actions/checkout@v7
+
+      - name: Настройка сборки
+        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+
+      - name: Сборка
+        run: cmake --build build --config Release
+
+      - name: Запуск тестов
+        run: ctest --test-dir build -C Release --output-on-failure
